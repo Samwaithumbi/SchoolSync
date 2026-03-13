@@ -2,6 +2,7 @@ import FilterAssignment from "@/components/assignments/filterAssignments"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { Plus, Calendar, Clock, CheckCircle, Target, Edit, Trash2, AlertCircle } from "lucide-react"
+import { courses } from "@/lib/data"
 
 export default async function Page() {
   const assignments = await prisma.assignment.findMany({
@@ -131,7 +132,7 @@ export default async function Page() {
 
       {/* Filters */}
       <div className="bg-card rounded-xl p-6 border shadow-sm">
-        <FilterAssignment />
+        <FilterAssignment courses={courses}/>
       </div>
 
       {/* Assignment List */}

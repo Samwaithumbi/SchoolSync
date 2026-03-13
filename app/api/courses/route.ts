@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 
+// Get all courses
 export async function GET() {
   try {
     const courses = await prisma.course.findMany({
@@ -20,6 +21,7 @@ export async function GET() {
   }
 }
 
+// Create a new course
 export async function POST(responce:NextResponse){
   try{
     const body = await responce.json()
