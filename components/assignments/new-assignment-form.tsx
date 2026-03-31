@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Course } from "@/lib/types"
 import {
   BookOpen,
   Calendar,
@@ -14,10 +15,6 @@ import {
   Sparkles,
 } from "lucide-react"
 
-type Course = {
-  id: number
-  name: string
-}
 interface Props {
     courses: Course[]
   }
@@ -50,7 +47,6 @@ const STATUS_OPTIONS = [
 export default function NewAssignmentForm({courses}:Props) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [fetchingCourses, setFetchingCourses] = useState(true)
     const [success, setSuccess] = useState(false)
     const [errors, setErrors] = useState<FormErrors>({})
     const [serverError, setServerError] = useState("")

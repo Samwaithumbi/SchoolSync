@@ -1,10 +1,9 @@
 import Link from "next/link"
-import { BookOpen, ArrowLeft, Palette } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import NewCourseForm from "@/components/coursecomps/new-course-form"
 
 export default function Page() {
   
-
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}

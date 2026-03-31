@@ -1,18 +1,32 @@
 //types.ts
-export type Status = "pending" | "in-progress" | "submitted"
+export type Status = "pending" | "in_progress" | "submitted"
 export type Priority = "low" | "medium" | "high"
 
 export type Course = {
     id:number
     name:string
-    color:string
+    
 }
 export type Assignment = {
-    id:string
-    title:string
-    courseId:string
-    description:string
-    dueDate:string
-    priority:Priority
-    status:Status
-}
+    id: number
+    title: string
+    courseId: number
+    description: string | null
+    dueDate: Date
+    priority: Priority
+    status: Status
+  }
+  
+  export type AssignmentWithCourse = Assignment & {
+    course: {
+      id: number
+      name: string
+      createdAt: Date
+    }
+  }
+export type Filters = {
+    query: string
+    course: string
+    status: string
+    priority: string
+  }

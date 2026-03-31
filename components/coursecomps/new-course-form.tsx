@@ -27,7 +27,7 @@ export default function NewCourseForm(){
     setLoading(true)
   
     try {
-      const res = await fetch("/api/course", {
+      const res = await fetch("/api/courses", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
