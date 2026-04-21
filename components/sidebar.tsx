@@ -11,6 +11,7 @@ import {
   Menu,
   X,
 } from "lucide-react"
+import { UserButton } from "@clerk/nextjs"
 
 type SidebarLink = {
   id: number
@@ -63,7 +64,8 @@ export default function Sidebar() {
         {/* Logo */}
         <div className="flex items-center gap-2 px-6 py-5 text-lg font-bold text-white">
           <GraduationCap className="h-6 w-6" aria-hidden />
-          <span className="text-blue-400">Uni</span>Track
+          <span className="text-blue-400">School</span>Sync
+          <UserButton />
         </div>
 
         <nav className="mt-4 px-3">

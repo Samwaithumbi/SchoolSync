@@ -1,7 +1,9 @@
 import Stats from "@/components/dashboard/stats"
-import { getDashboardStats, getUpcomingAssignments } from "@/lib/data"
+import {  getUpcomingAssignments } from "@/lib/data"
 import { prisma } from "@/lib/prisma"
-import { Calendar, Clock, CheckCircle, AlertCircle, TrendingUp, BookOpen, Target, Award } from "lucide-react"
+import { Calendar, CheckCircle, AlertCircle, TrendingUp, BookOpen, Target, Award } from "lucide-react"
+import {  currentUser } from "@clerk/nextjs/server"
+import { UserButton } from "@clerk/nextjs"
 
 type DashboardCard = {
   id: number
@@ -13,6 +15,8 @@ type DashboardCard = {
 }
 
 export default async function Page() {
+  const user = await currentUser()
+  console.log(user?.firstName)
   
   const upcomingAssignments = getUpcomingAssignments()
   
@@ -71,14 +75,14 @@ const stats = {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <header className="text-center">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground ">
-            Dashboard
+          <h1 className="text-3xl font-bold text-foreground">
+            Welcome back, {user?.firstName ?? "Student"} 👋
           </h1>
           <p className="text-muted-foreground mt-1">{date}</p>
         </div>
-        <div className="mt-4 sm:mt-0 flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <div className="flex items-center space-x-1 text-sm text-muted-foreground">
             <TrendingUp className="w-4 h-4" />
             <span>Productivity up 23%</span>

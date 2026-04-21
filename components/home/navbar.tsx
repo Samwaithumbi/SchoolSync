@@ -1,54 +1,30 @@
 "use client"
 
+import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs"
 import Link from "next/link"
-import { useState } from "react"
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
-
   return (
-    <header className="border-b bg-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <nav className="flex justify-between items-center p-4">
+      <Link href="/" className="text-4xl font-bold">SchoolSync</Link>
 
-        <Link href="/" className="text-xl font-bold">
-          AssignTrack
-        </Link>
+      <div className="flex items-center gap-4">
+        <Show when="signed-out">
+          <SignInButton forceRedirectUrl="/dashboard">
+            <button className="text-sm font-medium">Sign In</button>
+          </SignInButton>
+          <SignUpButton forceRedirectUrl="/dashboard">
+            <button className="bg-purple-700 text-white rounded-full text-sm h-10 px-5 cursor-pointer">
+              Sign Up
+            </button>
+          </SignUpButton>
+        </Show>
 
-        <nav className="hidden md:flex gap-8 text-sm">
-          <Link href="#features">Features</Link>
-          <Link href="#how">How it works</Link>
-          <Link href="#testimonials">Testimonials</Link>
-        </nav>
-
-        <div className="hidden md:flex gap-4">
-          <Link href="/login" className="text-sm">
-            Login
-          </Link>
-
-          <Link
-            href="/register"
-            className="bg-black text-white px-4 py-2 rounded-lg text-sm"
-          >
-            Get Started
-          </Link>
-        </div>
-
-        <button
-          className="md:hidden"
-          onClick={() => setOpen(!open)}
-        >
-          ☰
-        </button>
+        <Show when="signed-in">
+          <Link href="/dashboard" className="text-sm font-medium">dash</Link>
+          <UserButton/>
+        </Show>
       </div>
-
-      {open && (
-        <div className="md:hidden px-6 pb-4 flex flex-col gap-4">
-          <Link href="#features">Features</Link>
-          <Link href="#how">How it works</Link>
-          <Link href="/login">Login</Link>
-          <Link href="/register">Get Started</Link>
-        </div>
-      )}
-    </header>
+    </nav>
   )
 }
