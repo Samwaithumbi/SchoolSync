@@ -17,13 +17,13 @@ const prisma = new PrismaClient({
 
 async function main() {
 
-  const courses = await prisma.course.createMany({
+  await prisma.course.createMany({
     data: [
-      { name: "Algorithms" },
-      { name: "Web Development" },
-      { name: "Database Systems" },
-      { name: "Software Engineering" },
-      { name: "Computer Networks" },
+      { name: "Algorithms", userId: "demo-user-id" },
+      { name: "Web Development", userId: "demo-user-id" },
+      { name: "Database Systems", userId: "demo-user-id" },
+      { name: "Software Engineering", userId: "demo-user-id" },
+      { name: "Computer Networks", userId: "demo-user-id" },
     ],
     skipDuplicates: true
   });
@@ -36,13 +36,15 @@ async function main() {
         title: "Build a REST API with Next.js",
         courseId: 2,
         dueDate: new Date("2025-03-08"),
-        status: "pending"
+        status: "pending",
+        description: "Create a fully functional REST API using Next.js API routes"
       },
       {
         title: "ER Diagram for Hospital Management",
         courseId: 3,
         dueDate: new Date("2025-02-28"),
-        status: "submitted"
+        status: "submitted",
+        description: "Create an ER diagram for a hospital management system"
       },
       {
         title: "UML Class Diagram",

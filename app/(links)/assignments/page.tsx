@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import FilterAssignment from "@/components/assignments/filterAssignments"
 import AssignmentsClient from "@/components/assignments/assignmentsClient"
 import { AssignmentWithCourse, Course, Status, Priority } from "@/lib/types"
+import { currentUser } from "@clerk/nextjs/server"
 
 interface PageProps {
   searchParams: Promise<{
@@ -14,6 +15,11 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
+  const user = await currentUser()
+  if (!user) {
+    return <div>Please sign in to view your assignments.</div>
+  }
+
   const { query, course, status, priority } = await searchParams
 
   const statusFilter   = status   && status   !== "all" ? (status   as Status)   : undefined
@@ -21,6 +27,9 @@ export default async function Page({ searchParams }: PageProps) {
 
   const assignments: AssignmentWithCourse[] = await prisma.assignment.findMany({
     where: {
+      course: {
+        userId: user.id
+      },
       ...(statusFilter   && { status: statusFilter }),
       ...(priorityFilter && { priority: priorityFilter }),
       ...(course && course !== "all" && { course: { name: course } }),
@@ -31,10 +40,19 @@ export default async function Page({ searchParams }: PageProps) {
   })
 
   const allAssignments: AssignmentWithCourse[] = await prisma.assignment.findMany({
+    where: {
+      course: {
+        userId: user.id
+      }
+    },
     include: { course: true },
   })
 
-  const courses: Course[] = await prisma.course.findMany()
+  const courses: Course[] = await prisma.course.findMany({
+    where: {
+      userId: user.id
+    }
+  })
 
   const isFiltered = !!(
     query ||

@@ -25,34 +25,38 @@ enum Priority {
 }
 
 model User {
-  id        String   @id // Clerk user ID
+  id        String   @id
   email     String   @unique
   firstName String?
   lastName  String?
   imageUrl  String?
 
+  courses   Course[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
 }
 
 model Course {
-  id Int      @id @default(autoincrement())
-  name        String
-  createdAt    DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   assignments Assignment[]
 }
 
 model Assignment {
-  id       Int        @id @default(autoincrement())       
-  title    String
-  dueDate  DateTime
-  status   Status
-  description  String?
+  id          Int       @id @default(autoincrement())
+  title       String
+  dueDate     DateTime
+  status      Status
+  description String?
   priority    Priority  @default(medium)
-  createdAt DateTime  @default(now())
+  createdAt   DateTime  @default(now())
 
-  courseId  Int
-  course    Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }

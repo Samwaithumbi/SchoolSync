@@ -2,122 +2,121 @@ import { Assignment, Course } from "./types";
 
 // ─── Courses ──────────────────────────────────────────────────
 export const courses: Course[] = [
-  { id: "c1", name: "Data Structures & Algorithms", color: "#3B82F6" },
-  { id: "c2", name: "Web Development", color: "#8B5CF6" },
-  { id: "c3", name: "Database Systems", color: "#F97316" },
-  { id: "c4", name: "Software Engineering", color: "#22C55E" },
-  { id: "c5", name: "Computer Networks", color: "#EF4444" },
+  { id: 1, name: "Data Structures & Algorithms", color: "#3B82F6" },
+  { id: 2, name: "Web Development", color: "#8B5CF6" },
+  { id: 3, name: "Database Systems", color: "#F97316" },
+  { id: 4, name: "Software Engineering", color: "#22C55E" },
+  { id: 5, name: "Computer Networks", color: "#EF4444" },
 ];
 
 // ─── Assignments ──────────────────────────────────────────────
 export const assignments: Assignment[] = [
- 
   {
-    id: "a2",
+    id: 1,
     title: "Build a REST API with Next.js",
-    courseId: "c2",
+    courseId: 2,
     description:
       "Create a fully functional REST API using Next.js API routes. Must include GET, POST, PUT, and DELETE endpoints with proper error handling.",
-    dueDate: "2025-03-08",
+    dueDate: new Date("2025-03-08"),
     priority: "high",
     status: "pending",
   },
   {
-    id: "a3",
+    id: 2,
     title: "ER Diagram for Hospital Management",
-    courseId: "c3",
+    courseId: 3,
     description:
       "Design a complete entity-relationship diagram for a hospital management system covering patients, doctors, appointments, and billing.",
-    dueDate: "2025-02-28",
+    dueDate: new Date("2025-02-28"),
     priority: "medium",
     status: "submitted",
   },
   {
-    id: "a4",
+    id: 3,
     title: "UML Class Diagram",
-    courseId: "c4",
+    courseId: 4,
     description:
       "Create UML class diagrams for the library management system case study. Include inheritance, associations, and multiplicity.",
-    dueDate: "2025-02-20",
+    dueDate: new Date("2025-02-20"),
     priority: "medium",
     status: "submitted",
   },
   {
-    id: "a5",
+    id: 4,
     title: "TCP vs UDP Research Paper",
-    courseId: "c5",
+    courseId: 5,
     description:
       "Write a 2000-word research paper comparing TCP and UDP protocols, with real-world use cases and performance benchmarks.",
-    dueDate: "2025-02-18",
+    dueDate: new Date("2025-02-18"),
     priority: "low",
     status: "pending",
   },
   {
-    id: "a6",
+    id: 5,
     title: "Graph Traversal Algorithms",
-    courseId: "c1",
+    courseId: 1,
     description:
       "Implement BFS and DFS from scratch and demonstrate their use on a sample graph. Compare time and space complexity.",
-    dueDate: "2025-03-15",
+    dueDate: new Date("2025-03-15"),
     priority: "medium",
     status: "pending",
   },
   {
-    id: "a7",
+    id: 6,
     title: "Responsive Portfolio Website",
-    courseId: "c2",
+    courseId: 2,
     description:
       "Build a fully responsive personal portfolio website using HTML, CSS, and JavaScript. Must work on mobile, tablet, and desktop.",
-    dueDate: "2025-03-20",
+    dueDate: new Date("2025-03-20"),
     priority: "low",
     status: "pending",
   },
   {
-    id: "a8",
+    id: 7,
     title: "SQL Query Optimization",
-    courseId: "c3",
+    courseId: 3,
     description:
       "Analyze and optimize 10 given SQL queries using indexes, query plans, and rewriting techniques. Document before/after performance.",
-    dueDate: "2025-03-10",
+    dueDate: new Date("2025-03-10"),
     priority: "high",
-    status: "in-progress",
+    status: "in_progress",
   },
   {
-    id: "a9",
+    id: 8,
     title: "Agile Sprint Planning Report",
-    courseId: "c4",
+    courseId: 4,
     description:
       "Document a two-week agile sprint plan for the team project. Include user stories, story points, and a burndown chart.",
-    dueDate: "2025-03-12",
+    dueDate: new Date("2025-03-12"),
     priority: "medium",
     status: "pending",
   },
   {
-    id: "a10",
+    id: 9,
     title: "Subnetting and CIDR Notation",
-    courseId: "c5",
+    courseId: 5,
     description:
       "Solve 20 subnetting problems using CIDR notation. Show all working including network address, broadcast address, and usable hosts.",
-    dueDate: "2025-03-18",
+    dueDate: new Date("2025-03-18"),
     priority: "low",
-    status: "in-progress",
+    status: "in_progress",
   },
 ];
 
 // ─── Helper Functions ──────────────────────────────────────────
 
 /** Get a course by its ID */
-export function getCourseById(id: string): Course | undefined {
+export function getCourseById(id: number): Course | undefined {
   return courses.find((c) => c.id === id);
 }
 
 /** Get an assignment by its ID */
-export function getAssignmentById(id: string): Assignment | undefined {
+export function getAssignmentById(id: number): Assignment | undefined {
   return assignments.find((a) => a.id === id);
 }
 
 /** Get all assignments for a specific course */
-export function getAssignmentsByCourse(courseId: string): Assignment[] {
+export function getAssignmentsByCourse(courseId: number): Assignment[] {
   return assignments.filter((a) => a.courseId === courseId);
 }
 
@@ -156,7 +155,7 @@ export function getDashboardStats() {
   return {
     total: assignments.length,
     pending: assignments.filter((a) => a.status === "pending").length,
-    inProgress: assignments.filter((a) => a.status === "in-progress").length,
+    inProgress: assignments.filter((a) => a.status === "in_progress").length,
     submitted: assignments.filter((a) => a.status === "submitted").length,
     overdue: getOverdueAssignments().length,
   };

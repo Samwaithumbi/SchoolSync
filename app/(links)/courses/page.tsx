@@ -2,10 +2,18 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { Plus } from "lucide-react"
 import CourseCard from "@/components/coursecomps/course-card"
+import { currentUser } from "@clerk/nextjs/server"
 
 export default async function Page() {
+  const user = await currentUser()
+  if (!user) {
+    return <div>Please sign in to view your courses.</div>
+  }
 
   const courses = await prisma.course.findMany({
+    where: {
+      userId: user.id
+    },
     include: {
       assignments: {
         select: {

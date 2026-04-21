@@ -31,7 +31,7 @@ export default function Testimonials() {
                 className="bg-white border p-6 rounded-xl"
               >
                 <p className="text-gray-600">
-                  "{t.text}"
+                  &quot;{t.text}&quot;
                 </p>
   
                 <p className="mt-4 font-semibold">

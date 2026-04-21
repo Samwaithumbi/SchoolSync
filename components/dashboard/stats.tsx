@@ -1,4 +1,4 @@
-import {  Clock, CheckCircle,  TrendingUp, BookOpen, Target, Award } from "lucide-react"
+import {  Clock, CheckCircle,  TrendingUp, BookOpen, Target } from "lucide-react"
 
 type DashboardCard = {
     id: number

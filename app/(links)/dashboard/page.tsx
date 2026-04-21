@@ -1,28 +1,22 @@
 import Stats from "@/components/dashboard/stats"
-import {  getUpcomingAssignments } from "@/lib/data"
 import { prisma } from "@/lib/prisma"
-import { Calendar, CheckCircle, AlertCircle, TrendingUp, BookOpen, Target, Award } from "lucide-react"
-import {  currentUser } from "@clerk/nextjs/server"
-import {user} from "../../../lib/types"
-
-
-type DashboardCard = {
-  id: number
-  label: string
-  value: number
-  icon: React.ReactNode
-  color: string
-  trend?: string
-}
+import { Calendar, CheckCircle, AlertCircle, TrendingUp, Award } from "lucide-react"
+import { currentUser } from "@clerk/nextjs/server"
 
 export default async function Page() {
   const user = await currentUser()
   console.log(user)
- 
-  const upcomingAssignments = getUpcomingAssignments()
   
+  if (!user) {
+    return <div>Please sign in to view your dashboard.</div>
+  }
 
   const assignments = await prisma.assignment.findMany({
+    where: {
+      course: {
+        userId: user.id
+      }
+    },
     include: {
       course: true
     },
@@ -116,10 +110,10 @@ const stats = {
                 <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
               <p className="text-muted-foreground">
-                No upcoming deadlines 
+                No upcoming deadlines&apos;
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                You're all caught up!
+                You&apos;re all caught up!
               </p>
             </div>
           ) : (

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { Status, Priority } from "@/lib/types"
+import { currentUser } from "@clerk/nextjs/server"
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -9,6 +10,11 @@ interface RouteParams {
 // ─── PATCH /api/assignments/[id] ─────────────────────────────────────────────
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
   try {
+    const user = await currentUser()
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { id } = await params
     const assignmentId = Number(id)
 
@@ -18,6 +24,34 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 
     const body = await req.json()
     const { title, courseId, status, priority, dueDate, description } = body
+
+    // Verify assignment belongs to user
+    const existingAssignment = await prisma.assignment.findFirst({
+      where: {
+        id: assignmentId,
+        course: {
+          userId: user.id,
+        },
+      },
+    })
+
+    if (!existingAssignment) {
+      return NextResponse.json({ message: "Assignment not found or unauthorized" }, { status: 404 })
+    }
+
+    // If changing course, verify new course belongs to user
+    if (courseId && courseId !== existingAssignment.courseId) {
+      const course = await prisma.course.findFirst({
+        where: {
+          id: Number(courseId),
+          userId: user.id,
+        },
+      })
+
+      if (!course) {
+        return NextResponse.json({ message: "Invalid course or unauthorized" }, { status: 403 })
+      }
+    }
 
     // Validate required fields
     if (!title || !courseId || !status || !priority || !dueDate) {
@@ -67,11 +101,30 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 // ─── DELETE /api/assignments/[id] ────────────────────────────────────────────
 export async function DELETE(_req: NextRequest, { params }: RouteParams) {
   try {
+    const user = await currentUser()
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { id } = await params
     const assignmentId = Number(id)
 
     if (isNaN(assignmentId)) {
       return NextResponse.json({ message: "Invalid assignment ID" }, { status: 400 })
+    }
+
+    // Verify assignment belongs to user before deleting
+    const assignment = await prisma.assignment.findFirst({
+      where: {
+        id: assignmentId,
+        course: {
+          userId: user.id,
+        },
+      },
+    })
+
+    if (!assignment) {
+      return NextResponse.json({ message: "Assignment not found or unauthorized" }, { status: 404 })
     }
 
     await prisma.assignment.delete({

@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-
+import { currentUser } from "@clerk/nextjs/server"
 
 export async function GET(
   req: NextRequest,
   {params}:{params: Promise<{id:string}>}
 ){
     try{
+        const user = await currentUser()
+        if (!user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
+
         const {id} = await params
-        const course = await prisma.course.findUnique({
-            where:{id:Number(id)},
+        const course = await prisma.course.findFirst({
+            where:{
+                id:Number(id),
+                userId: user.id
+            },
             select:{
                 id:true,
                 name:true,
@@ -31,11 +39,29 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const user = await currentUser()
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { id } = await params  // ← await here
     const { name } = await req.json()
     if (!name?.trim()) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 })
     }
+
+    // Verify course belongs to user before updating
+    const existingCourse = await prisma.course.findFirst({
+      where: {
+        id: Number(id),
+        userId: user.id,
+      },
+    })
+
+    if (!existingCourse) {
+      return NextResponse.json({ error: "Course not found or unauthorized" }, { status: 404 })
+    }
+
     const course = await prisma.course.update({
       where: { id: Number(id) },  // ← use id, not params.id
       data: { name: name.trim() },
@@ -53,7 +79,25 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const user = await currentUser()
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { id } = await params  // ← await params
+    
+    // Verify course belongs to user before deleting
+    const course = await prisma.course.findFirst({
+      where: {
+        id: Number(id),
+        userId: user.id,
+      },
+    })
+
+    if (!course) {
+      return NextResponse.json({ error: "Course not found or unauthorized" }, { status: 404 })
+    }
+
     await prisma.course.delete({
       where: { id: Number(id) },
     })

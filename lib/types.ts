@@ -9,7 +9,9 @@ export type user = {
 export type Course = {
     id:number
     name:string
+    color?: string
 }
+
 export type Assignment = {
     id: number
     title: string

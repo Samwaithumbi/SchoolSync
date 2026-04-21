@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { BookOpen, Plus, Edit, Trash2, Calendar, Loader2, X, AlertTriangle } from "lucide-react"
+import { Calendar, BookOpen, Edit, Trash2, X, AlertTriangle, Loader2 } from "lucide-react"
 
 type Course = {
   id: number
@@ -262,7 +262,7 @@ export default function CourseCard({ courses }: Props) {
               <div>
                 <h2 className="text-lg font-semibold text-foreground">Delete Course</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Are you sure you want to delete <span className="font-medium text-foreground">"{deletingCourse.name}"</span>?
+                  Are you sure you want to delete <span className="font-medium text-foreground">&quot;{deletingCourse.name}&quot;</span>?
                   This will also delete all {deletingCourse.assignments.length} associated assignments. This cannot be undone.
                 </p>
               </div>
