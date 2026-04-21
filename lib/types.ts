@@ -2,10 +2,13 @@
 export type Status = "pending" | "in_progress" | "submitted"
 export type Priority = "low" | "medium" | "high"
 
+export type user = {
+  id:string
+}
+
 export type Course = {
     id:number
     name:string
-    
 }
 export type Assignment = {
     id: number

@@ -3,7 +3,8 @@ import {  getUpcomingAssignments } from "@/lib/data"
 import { prisma } from "@/lib/prisma"
 import { Calendar, CheckCircle, AlertCircle, TrendingUp, BookOpen, Target, Award } from "lucide-react"
 import {  currentUser } from "@clerk/nextjs/server"
-import { UserButton } from "@clerk/nextjs"
+import {user} from "../../../lib/types"
+
 
 type DashboardCard = {
   id: number
@@ -16,8 +17,8 @@ type DashboardCard = {
 
 export default async function Page() {
   const user = await currentUser()
-  console.log(user?.firstName)
-  
+  console.log(user)
+ 
   const upcomingAssignments = getUpcomingAssignments()
   
 

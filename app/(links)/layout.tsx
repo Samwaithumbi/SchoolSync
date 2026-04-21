@@ -1,4 +1,5 @@
 import Sidebar from "@/components/sidebar";
+import { syncUser } from "@/lib/syncUser";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,11 +7,12 @@ export const metadata: Metadata = {
   description: "Notes assignments for deadline notifications",
 };
 
-export default function LinksLayout({
+export default async function LinksLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await syncUser()
   return (
     <div className="flex min-h-screen">
       <Sidebar />

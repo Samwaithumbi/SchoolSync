@@ -2,7 +2,9 @@ import {prisma} from '@/lib/prisma';
 import {NextResponse, NextRequest} from 'next/server';
 import { Status} from "@prisma/client"
 import { Priority} from "@prisma/client"
+import { currentUser } from '@clerk/nextjs/server';
 
+const user = await currentUser()
 // GET /api/assignments
 export async function GET() {
   try {
